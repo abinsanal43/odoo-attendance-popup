@@ -11,6 +11,7 @@
             'attendance_popup/static/src/js/attendance_popup.js',
         ],
     },
+    'images': ['static/description/attendance_popup.png'],
     'installable': True,
     'application': False,
     'license': 'LGPL-3',
