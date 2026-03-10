@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --indigo: #6366f1;
+            --indigo-dark: #4f46e5;
+            --green: #22c55e;
+            --green-dark: #16a34a;
+            --ink: #0f0e17;
+            --slate: #64748b;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --card-bg: #f1f5f9;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--white);
+            color: var(--ink);
+            line-height: 1.6;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, #0f0e17 0%, #1e1b4b 50%, #0f172a 100%);
+            padding: 80px 40px 90px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%);
+            top: -200px; left: 50%; transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(99,102,241,0.15);
+            border: 1px solid rgba(99,102,241,0.35);
+            color: #a5b4fc;
+            font-family: 'Syne', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 100px;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(32px, 5vw, 52px);
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #818cf8, #6366f1, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 17px;
+            color: #94a3b8;
+            max-width: 520px;
+            margin: 0 auto 40px;
+            font-weight: 300;
+        }
+
+        .hero-pills {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-pill {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #cbd5e1;
+            font-size: 13px;
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-weight: 400;
+        }
+
+        /* ── POPUP PREVIEW ── */
+        .preview-section {
+            background: var(--light);
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .section-label {
+            font-family: 'Syne', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--indigo);
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(24px, 3.5vw, 36px);
+            font-weight: 800;
+            color: var(--ink);
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-sub {
+            color: var(--slate);
+            font-size: 15px;
+            max-width: 480px;
+            margin: 0 auto 56px;
+        }
+
+        .popup-previews {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Mock popup cards */
+        .mock-popup {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 40px 44px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.10);
+            position: relative;
+        }
+
+        .mock-popup.checkin { border-top: 5px solid var(--indigo); }
+        .mock-popup.checkout { border-top: 5px solid var(--green); }
+
+        .mock-popup .mock-tag {
+            position: absolute;
+            top: -14px; left: 50%; transform: translateX(-50%);
+            font-family: 'Syne', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            border-radius: 100px;
+        }
+
+        .mock-popup.checkin .mock-tag { background: var(--indigo); color: white; }
+        .mock-popup.checkout .mock-tag { background: var(--green); color: white; }
+
+        .mock-emoji { font-size: 48px; display: block; margin-bottom: 14px; }
+
+        .mock-popup h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .mock-popup.checkin h3 { color: #1e1b4b; }
+        .mock-popup.checkout h3 { color: #14532d; }
+
+        .mock-popup p {
+            font-size: 13px;
+            color: var(--slate);
+            margin-bottom: 6px;
+        }
+
+        .mock-time {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin: 14px 0;
+        }
+
+        .mock-popup.checkin .mock-time {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mock-popup.checkout .mock-time {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mock-worked {
+            background: rgba(34,197,94,0.08);
+            border: 1px solid rgba(34,197,94,0.2);
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin: 12px 0 16px;
+        }
+
+        .mock-worked-label { font-size: 10px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
+        .mock-worked-val { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: #16a34a; }
+
+        .mock-btn {
+            display: inline-block;
+            padding: 10px 28px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            border: none;
+        }
+
+        .mock-popup.checkin .mock-btn { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+        .mock-popup.checkout .mock-btn { background: linear-gradient(135deg, #16a34a, #22c55e); }
+
+        /* ── FEATURES ── */
+        .features-section {
+            padding: 80px 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-top: 52px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 32px 28px;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .feature-card h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--slate);
+            line-height: 1.6;
+        }
+
+        /* ── HOW IT WORKS ── */
+        .how-section {
+            background: linear-gradient(135deg, #0f0e17 0%, #1e1b4b 100%);
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .how-section .section-title { color: var(--white); }
+        .how-section .section-sub { color: #94a3b8; }
+        .how-section .section-label { color: #818cf8; }
+
+        .steps {
+            display: flex;
+            gap: 0;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 860px;
+            margin: 52px auto 0;
+            position: relative;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 180px;
+            max-width: 200px;
+            text-align: center;
+            padding: 0 16px;
+            position: relative;
+        }
+
+        .step-num {
+            width: 52px; height: 52px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: white;
+            margin: 0 auto 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.55;
+        }
+
+        /* ── COMPATIBILITY ── */
+        .compat-section {
+            padding: 80px 40px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .compat-grid {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .compat-chip {
+            background: var(--card-bg);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 28px;
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .compat-chip span {
+            display: block;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--slate);
+            margin-top: 4px;
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            background: #0f0e17;
+            padding: 48px 40px;
+            text-align: center;
+        }
+
+        .footer-brand {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .footer a {
+            color: #818cf8;
+            text-decoration: none;
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            width: 48px; height: 3px;
+            background: linear-gradient(90deg, var(--indigo), var(--green));
+            border-radius: 100px;
+            margin: 0 auto 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+    <div class="hero-badge">Odoo 17 · HR Attendance</div>
+    <h1>Attendance Popups<br/>that feel <span>human</span></h1>
+    <p>Beautiful, contextual check-in and check-out messages that greet your team by name — every single day.</p>
+    <div class="hero-pills">
+        <span class="hero-pill">✅ Zero configuration</span>
+        <span class="hero-pill">🎨 Elegant UI</span>
+        <span class="hero-pill">⚡ Lightweight JS only</span>
+        <span class="hero-pill">🕐 Auto-dismiss</span>
+    </div>
+</section>
+
+<!-- ── POPUP PREVIEW ── -->
+<section class="preview-section">
+    <div class="section-label">Live Preview</div>
+    <h2 class="section-title">Two popups. One great experience.</h2>
+    <p class="section-sub">Each popup is context-aware — greeting changes based on time of day, and checkout shows total hours worked.</p>
+
+    <div class="popup-previews">
+        <!-- Check-in mock -->
+        <div class="mock-popup checkin">
+            <span class="mock-tag">Check In</span>
+            <span class="mock-emoji">👋</span>
+            <h3>Good Morning!</h3>
+            <p>Welcome, <strong style="color:#6366f1">Abin</strong></p>
+            <p>Have a productive day ahead.</p>
+            <div class="mock-time">09:03</div>
+            <button class="mock-btn">Let's Go</button>
+        </div>
+
+        <!-- Check-out mock -->
+        <div class="mock-popup checkout">
+            <span class="mock-tag">Check Out</span>
+            <span class="mock-emoji">🌅</span>
+            <h3>Goodbye!</h3>
+            <p>See you, <strong style="color:#16a34a">Abin</strong>!</p>
+            <div class="mock-time">18:15</div>
+            <div class="mock-worked">
+                <div class="mock-worked-label">Worked Today</div>
+                <div class="mock-worked-val">08:42</div>
+            </div>
+            <button class="mock-btn">Done for Today</button>
+        </div>
+    </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="features-section">
+    <div style="text-align:center">
+        <div class="section-label">Features</div>
+        <h2 class="section-title">Everything you need, nothing you don't.</h2>
+        <p class="section-sub">Built to be lightweight, elegant, and drop-in ready for any Odoo 17 instance.</p>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <span class="feature-icon">🌤️</span>
+            <h4>Time-aware Greetings</h4>
+            <p>Automatically says "Good Morning", "Good Afternoon", or "Good Evening" based on the current time.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">👤</span>
+            <h4>Personalized by Name</h4>
+            <p>Greets each employee by their actual Odoo username — no configuration required.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🕐</span>
+            <h4>Shows Worked Hours</h4>
+            <p>On checkout, displays total hours worked today in HH:MM format so employees stay informed.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">✨</span>
+            <h4>Smooth Animations</h4>
+            <p>Slide-up entrance, fade overlay, and subtle scale animation — all GPU-accelerated CSS.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">⏱️</span>
+            <h4>Auto-dismisses</h4>
+            <p>Popup disappears automatically after 7 seconds, or employees can close it instantly.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🧩</span>
+            <h4>No Backend Required</h4>
+            <p>Pure frontend module — no Python models, no database changes, no migrations needed.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how-section">
+    <div class="section-label">How it works</div>
+    <h2 class="section-title">Simple as 1 – 2 – 3</h2>
+    <p class="section-sub">Install the module and it works immediately — no setup, no forms, no configuration.</p>
+
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">1</div>
+            <h4>Install Module</h4>
+            <p>Install from the App Store. No restart required beyond the standard module install.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <h4>Employee Checks In</h4>
+            <p>Employee clicks the attendance button in the Odoo top bar systray.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <h4>Popup Appears</h4>
+            <p>A beautiful personalized greeting popup appears instantly, then fades away on its own.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ── COMPATIBILITY ── -->
+<section class="compat-section">
+    <div class="divider"></div>
+    <div class="section-label">Compatibility</div>
+    <h2 class="section-title">Built for Odoo 17</h2>
+    <p class="section-sub">Tested and confirmed working on Odoo 17 Community and Enterprise editions.</p>
+
+    <div class="compat-grid">
+        <div class="compat-chip">Odoo 17.0 <span>Community &amp; Enterprise</span></div>
+        <div class="compat-chip">hr_attendance <span>Required dependency</span></div>
+        <div class="compat-chip">web <span>Required dependency</span></div>
+        <div class="compat-chip">No Python <span>Frontend only</span></div>
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+    <div class="footer-brand">Orgvein Pvt. Ltd.</div>
+    <p>Built with care in Kerala, India · <a href="https://orgvein.com">orgvein.com</a></p>
+</footer>
+
+</body>
+</html>
